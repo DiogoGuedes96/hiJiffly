@@ -107,6 +107,33 @@ Specific MEWS endpoints extend the base client:
 
 Each endpoint class encapsulates the specific API calls and response handling for that MEWS resource.
 
+
+//IMPORTANT NOTE
+## Timezone Handling
+
+The MEWS API requires timezone-aware date conversions. Currently, the timezone is **hardcoded to `Europe/Budapest`** (configured via `MEWS_TIMEZONE_OVERRIDE` in `.env`).
+
+### Why Budapest?
+
+When calling the MEWS configuration endpoint, the `TimeZoneIdentifier` returns `Europe/Budapest` for the property.
+
+### Current Implementation
+
+For simplicity and to avoid multiple API calls, the timezone is set as a configuration variable. The `MewsTimeZoneService` handles all date conversions:
+
+- Converts local dates to UTC for API requests
+- Handles different timezone requirements for availability vs. reservations
+- Ensures correct time unit boundaries (midnight in local time)
+
+### Future Improvement
+
+Ideally, the application should:
+1. Call the MEWS configuration endpoint during bootstrap/initialization
+2. Retrieve the property's timezone dynamically
+3. Cache it for the session/request lifecycle
+
+This would make the application more flexible for properties in different timezones, but requires additional API calls and caching strategy.
+
 ## Installation
 
 ```bash
@@ -127,6 +154,7 @@ php artisan migrate
 # MEWS_API_BASE_URL=
 # MEWS_CLIENT_TOKEN=
 # MEWS_ACCESS_TOKEN=
+# MEWS_TIMEZONE_OVERRIDE=Europe/Budapest (default timezone)
 ```
 
 ## Testing
