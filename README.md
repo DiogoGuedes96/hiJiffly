@@ -134,6 +134,38 @@ Ideally, the application should:
 
 This would make the application more flexible for properties in different timezones, but requires additional API calls and caching strategy.
 
+## Docker Setup (Recommended)
+
+This project uses **Laravel Sail**, which provides a Docker-based development environment with:
+- PHP 8.5
+- MySQL 8.4
+- All necessary PHP extensions
+
+### Quick Start with Docker
+
+```bash
+# Install dependencies
+composer install
+
+# Copy environment file
+cp .env.example .env
+
+# Start Docker containers
+composer dev
+```
+
+The `composer dev` command is a shortcut that runs `./vendor/bin/sail up -d`, which:
+- Starts all Docker containers in detached mode (background)
+- Makes the API available at `http://localhost` (port 80 by default)
+- Runs MySQL database on port 3306
+
+### Port Configuration
+
+The default ports can be customized in `.env`:
+- `APP_PORT=80` - Application port
+- `FORWARD_DB_PORT=3306` - MySQL port
+- `VITE_PORT=5173` - Vite dev server port
+
 ## Installation
 
 ```bash
@@ -157,9 +189,9 @@ php artisan migrate
 # MEWS_TIMEZONE_OVERRIDE=Europe/Budapest (default timezone)
 ```
 
-## Testing
+## Testin
 
-```bash
+g```bash
 # Run all tests
 php artisan test
 
